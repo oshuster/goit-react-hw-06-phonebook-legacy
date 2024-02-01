@@ -1,4 +1,4 @@
-import { ADD_CONTACT, DEL_CONTACT } from './constants';
+import { ADD_CONTACT, DEL_CONTACT, SET_FILTER } from './constants';
 
 const initialState = {
   contacts: [{ id: 'imId123', name: 'redux Contact', number: '0978653824' }],
@@ -19,6 +19,11 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         contacts: newContactsList,
+      };
+    case SET_FILTER:
+      return {
+        ...state,
+        filter: payload,
       };
 
     default:

@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-import { ADD_CONTACT, DEL_CONTACT } from './constants';
+import { ADD_CONTACT, DEL_CONTACT, SET_FILTER } from './constants';
 
 const addContact = payload => {
   return {
@@ -19,4 +19,11 @@ const delContact = payload => {
   };
 };
 
-export { addContact, delContact };
+const setFilter = payload => {
+  return {
+    type: SET_FILTER,
+    payload,
+  };
+};
+
+export { addContact, delContact, setFilter };

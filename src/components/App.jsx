@@ -3,22 +3,22 @@ import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
-import { loadStorage, saveStorage } from './helpers/localeStorage';
+// import { useState, useEffect } from 'react';
+// import { loadStorage, saveStorage } from './helpers/localeStorage';
 
-import { addContact, delContact } from '../redux/actions';
+import { addContact, delContact, setFilter } from '../redux/actions';
 
 import css from './app.module.css';
 
-const KEY = 'contacts';
+// const KEY = 'contacts';
 
 const App = () => {
   const contacts = useSelector(store => store.contacts);
+  const filter = useSelector(store => store.filter);
   const dispatch = useDispatch();
 
   // const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
 
   const regExpPattern = {
     name: new RegExp(
@@ -74,16 +74,16 @@ const App = () => {
   //   saveStorage(KEY, contacts);
   // }, [contacts]);
 
-  // const filterKey = key => {
-  //   setFilter(key);
-  // };
+  const filterKey = key => {
+    dispatch(setFilter(key));
+  };
 
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
       <ContactForm onSaveContact={onSaveContact} />
       <h2>Contacts</h2>
-      <Filter filterKey={''} />
+      <Filter filterKey={filterKey} />
       <ContactList
         contactlist={getFilteredContacts()}
         onDeleteContact={onDeleteContact}
