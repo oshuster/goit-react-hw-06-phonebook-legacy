@@ -1,16 +1,23 @@
-import { useState, useEffect } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
-import { nanoid } from 'nanoid';
 import Filter from './Filter/Filter';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 import { loadStorage, saveStorage } from './helpers/localeStorage';
+
+import { addContact, delContact } from '../redux/actions';
 
 import css from './app.module.css';
 
 const KEY = 'contacts';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const contacts = useSelector(store => store.contacts);
+  const dispatch = useDispatch();
+
+  // const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
   const regExpPattern = {
@@ -22,16 +29,12 @@ const App = () => {
     ),
   };
 
-  const saveContact = ({ name, number }) => {
+  const onSaveContact = ({ name, number }) => {
     // перевірка на коректність введених даних
     if (regExpPattern.name.test(name) && regExpPattern.number.test(number)) {
       // перевірка на наявність контакту по номеру
       if (!contacts.some(contact => contact.number === number)) {
-        console.log('name', name);
-        console.log('number', number);
-        setContacts(prevState =>
-          setContacts([...prevState, { id: nanoid(), name, number }])
-        );
+        dispatch(addContact({ name, number }));
       } else {
         alert('Такий контакт вже існує');
         return;
@@ -42,9 +45,8 @@ const App = () => {
     }
   };
 
-  const deleteContact = id => {
-    const newList = contacts.filter(contact => contact.id !== id);
-    setContacts(newList);
+  const onDeleteContact = id => {
+    dispatch(delContact(id));
   };
 
   const getFilteredContacts = () => {
@@ -58,33 +60,33 @@ const App = () => {
   };
 
   //on load page
-  useEffect(() => {
-    const contactList = loadStorage(KEY);
-    if (contactList) {
-      setContacts(contactList);
-    } else {
-      setContacts([]);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const contactList = loadStorage(KEY);
+  //   if (contactList) {
+  //     setContacts(contactList);
+  //   } else {
+  //     setContacts([]);
+  //   }
+  // }, []);
 
   //on update state
-  useEffect(() => {
-    saveStorage(KEY, contacts);
-  }, [contacts]);
+  // useEffect(() => {
+  //   saveStorage(KEY, contacts);
+  // }, [contacts]);
 
-  const filterKey = key => {
-    setFilter(key);
-  };
+  // const filterKey = key => {
+  //   setFilter(key);
+  // };
 
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
-      <ContactForm saveContact={saveContact} />
+      <ContactForm onSaveContact={onSaveContact} />
       <h2>Contacts</h2>
-      <Filter filterKey={filterKey} />
+      <Filter filterKey={''} />
       <ContactList
         contactlist={getFilteredContacts()}
-        deleteContact={deleteContact}
+        onDeleteContact={onDeleteContact}
       />
     </div>
   );

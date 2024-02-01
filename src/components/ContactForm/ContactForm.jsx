@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import css from './contactForm.module.css';
 
-const ContactForm = ({ saveContact }) => {
+const ContactForm = ({ onSaveContact }) => {
   const [formData, setFormData] = useState({ name: '', number: '' });
 
   const handleInput = e => {
@@ -12,7 +12,7 @@ const ContactForm = ({ saveContact }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    saveContact(formData);
+    onSaveContact(formData);
     setFormData({
       name: '',
       number: '',

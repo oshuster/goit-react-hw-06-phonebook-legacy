@@ -1,6 +1,6 @@
 import css from './filter.module.css';
 
-const Filter = ({ filterKey }) => {
+const Filter = ({ filterKey = '' }) => {
   const filterValue = e => {
     const key = e.target.value.toLowerCase().trim();
     filterKey(key);

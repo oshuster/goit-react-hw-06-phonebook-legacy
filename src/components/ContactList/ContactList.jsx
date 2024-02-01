@@ -1,9 +1,9 @@
 import css from './contactList.module.css';
 
-const ContactList = ({ deleteContact, contactlist }) => {
+const ContactList = ({ onDeleteContact, contactlist }) => {
   const getId = e => {
     const id = e.target.dataset.id;
-    deleteContact(id);
+    onDeleteContact(id);
   };
 
   const elements = contactlist.map(contact => (
