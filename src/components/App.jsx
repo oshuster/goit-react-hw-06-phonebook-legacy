@@ -3,22 +3,15 @@ import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
 import { useSelector, useDispatch } from 'react-redux';
-// import { useState, useEffect } from 'react';
-// import { loadStorage, saveStorage } from './helpers/localeStorage';
-
 import { addContact, delContact, setFilter } from '../redux/actions';
 
 import css from './app.module.css';
-
-// const KEY = 'contacts';
+import { getAllContacts } from '../redux/contacts/contacts-selectors';
+import { getFilteredContacts } from '../redux/contacts/contacts-selectors';
 
 const App = () => {
-  const contacts = useSelector(store => store.contacts);
-  const filter = useSelector(store => store.filter);
+  const contacts = useSelector(getFilteredContacts);
   const dispatch = useDispatch();
-
-  // const [contacts, setContacts] = useState([]);
-  // const [filter, setFilter] = useState('');
 
   const regExpPattern = {
     name: new RegExp(
@@ -49,31 +42,6 @@ const App = () => {
     dispatch(delContact(id));
   };
 
-  const getFilteredContacts = () => {
-    if (!filter) {
-      return contacts;
-    } else {
-      return contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filter)
-      );
-    }
-  };
-
-  //on load page
-  // useEffect(() => {
-  //   const contactList = loadStorage(KEY);
-  //   if (contactList) {
-  //     setContacts(contactList);
-  //   } else {
-  //     setContacts([]);
-  //   }
-  // }, []);
-
-  //on update state
-  // useEffect(() => {
-  //   saveStorage(KEY, contacts);
-  // }, [contacts]);
-
   const filterKey = key => {
     dispatch(setFilter(key));
   };
@@ -84,10 +52,7 @@ const App = () => {
       <ContactForm onSaveContact={onSaveContact} />
       <h2>Contacts</h2>
       <Filter filterKey={filterKey} />
-      <ContactList
-        contactlist={getFilteredContacts()}
-        onDeleteContact={onDeleteContact}
-      />
+      <ContactList contactlist={contacts} onDeleteContact={onDeleteContact} />
     </div>
   );
 };
