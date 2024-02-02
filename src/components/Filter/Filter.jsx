@@ -1,9 +1,13 @@
 import css from './filter.module.css';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '../../redux/filter/filter-actions';
 
-const Filter = ({ filterKey }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+
   const filterValue = e => {
     const key = e.target.value.toLowerCase().trim();
-    filterKey(key);
+    dispatch(setFilter(key));
   };
 
   return (

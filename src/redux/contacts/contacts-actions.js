@@ -19,4 +19,4 @@ const delContact = payload => {
   };
 };
 
-export { addContact, delContact, setFilter };
+export { addContact, delContact };

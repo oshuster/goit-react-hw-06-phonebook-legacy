@@ -1,13 +1,13 @@
+import { useSelector, useDispatch } from 'react-redux';
+
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact, delContact, setFilter } from '../redux/actions';
+import { addContact, delContact } from '../redux/contacts/contacts-actions';
+import { getFilteredContacts } from '../redux/contacts/contacts-selectors';
 
 import css from './app.module.css';
-import { getAllContacts } from '../redux/contacts/contacts-selectors';
-import { getFilteredContacts } from '../redux/contacts/contacts-selectors';
 
 const App = () => {
   const contacts = useSelector(getFilteredContacts);
@@ -42,16 +42,12 @@ const App = () => {
     dispatch(delContact(id));
   };
 
-  const filterKey = key => {
-    dispatch(setFilter(key));
-  };
-
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
       <ContactForm onSaveContact={onSaveContact} />
       <h2>Contacts</h2>
-      <Filter filterKey={filterKey} />
+      <Filter />
       <ContactList contactlist={contacts} onDeleteContact={onDeleteContact} />
     </div>
   );
